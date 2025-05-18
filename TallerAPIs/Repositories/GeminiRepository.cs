@@ -1,4 +1,6 @@
-﻿using TallerAPIs.Interfaces;
+﻿using Newtonsoft.Json;
+using System.Text;
+using TallerAPIs.Interfaces;
 using TallerAPIs.Models;
 
 namespace TallerAPIs.Repositories
@@ -12,7 +14,7 @@ namespace TallerAPIs.Repositories
             _httpClient = new HttpClient();
         }
         
-        public Task<string> ObtenerRespuestaChatbot(string promt)
+        public async Task<string> ObtenerRespuestaChatbot(string promt)
         {
             string url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + geminiApiKey;
             GeminiRequest request = new GeminiRequest
@@ -31,7 +33,11 @@ namespace TallerAPIs.Repositories
                     }
                 }
             };
-            var content = new StringContent(); 
+
+            string json_data = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json_data,Encoding.UTF8, "aplication/json");
+            var response= await _httpClient.PostAsync(url, content);
+            return await response.Content.ReadAsStringAsync();
         }
         public bool GuardarRespuestaBaseDatosLocal(string promt, string respuesta)
         {
