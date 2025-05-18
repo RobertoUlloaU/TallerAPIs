@@ -1,8 +1,8 @@
 ﻿namespace TallerAPIs.Interfaces
 {
-    public interface IChatBotService
+    public interface IChatbotService
     {
-        public Task <string> ObtenerRespuestaChatBot(string promt);
+        public Task <string> ObtenerRespuestaChatbot(string promt);
         public bool GuardarRespuestaBaseDatosLocal(string promt,string respuesta);
     }
 }
